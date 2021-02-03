@@ -1,14 +1,16 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity >=0.8.0 <0.9.0;
 
+import "./Organizations.sol";
 import "./BusinessProcesses.sol";
+import "./EmployeesInBP.sol";
 
 /**
  * @title Incident management
  * @author Lukyantsev Dmitry
  * @notice An incident is a workflow object of an arbitrary business process
  */
-abstract contract IncidentManagment is BusinessProcesses {
+abstract contract IncidentManagment is Organizations, BusinessProcesses, EmployeesInBP {
     /// @dev Incident data
     struct Incident {
         uint keyIndex;       // Ключ в массиве инцидентов для их итерирования, начиная с заданного
@@ -112,7 +114,7 @@ abstract contract IncidentManagment is BusinessProcesses {
         uint resEmplId,
         bytes32 fileId
     ) 
-        external 
+        public 
         returns (
             uint historyId,
             bool success
@@ -127,7 +129,7 @@ abstract contract IncidentManagment is BusinessProcesses {
         Incident storage incident = incidents.data[incidentId];
         if (incident.resolveDate > 0)
             revert("The incident is already resolved");
-        // Может ли сотрудник завершить инцидент?
+        // Может ли сотрудник выполнить данное действие?
         if (!checkEmplAction(incident.bpId, reqEmplId, actionId))
             revert("The employee has not rigths for this action");
 
@@ -142,15 +144,14 @@ abstract contract IncidentManagment is BusinessProcesses {
     }
     
     /// @notice Close incident with successful result
-    /// @param resolveEmplId - employee id who resolve incident
-    /// @param prevActionEmplId - employee id from previous action
-    /// @dev TODO: prevActionEmplId may be query from previous action by contract
+    /// @param reqEmplId - employee id who resolve incident
+    /// @param resEmplId - employee id who can see this action (optional)
     function resolveIncident(
         uint incidentId,
-        uint resolveDate,
         uint resolveActionId,
-        uint resolveEmplId,
-        uint prevActionEmplId,
+        uint resolveDate,
+        uint reqEmplId,
+        uint resEmplId,
         bytes32 fileId
     ) 
         public
@@ -160,7 +161,7 @@ abstract contract IncidentManagment is BusinessProcesses {
             bool success
         )
     {
-        validateEmployee(resolveEmplId);
+        validateEmployee(reqEmplId);
         validateAction(resolveActionId);
         if (!incidentExists(incidentId))
             revert("The incident is not exists");
@@ -169,17 +170,20 @@ abstract contract IncidentManagment is BusinessProcesses {
         if (incident.resolveDate > 0)
             revert("The incident is already resolved");
         // Может ли сотрудник завершить инцидент?
-        if (!checkEmplAction(incident.bpId, resolveEmplId, resolveActionId))
+        if (!checkEmplAction(incident.bpId, reqEmplId, resolveActionId))
             revert("The employee cannot resolve this incident");
         // Занесём дату завершения
         incident.resolveDate = resolveDate;
+        
         // Занесём в историю завершение инцидента
+        // Если не указать в resEmplId сотрудника (проставить 0), то данную
+        // запись в истории сможет посмотреть только создавший её
         ( historyId, success) = incidentHistoryInsert(
             incidentId,
             resolveActionId,
             resolveDate,
-            resolveEmplId,
-            prevActionEmplId,
+            reqEmplId,
+            resEmplId,
             fileId);
     }
 
@@ -216,8 +220,28 @@ abstract contract IncidentManagment is BusinessProcesses {
         success = true;
     }
     
-    /// @notice Retriving incident history length
-    /// @notice History id enumerates from 1 to history length
+    /// @notice Retriving incident history ids for iterating over array
+    function getIncidentHistoryIds(uint incidentId) 
+        external
+        view
+        returns (uint[] memory ids, bool success) 
+    {
+        // Проверим наличие инцидента
+        if (!incidentExists(incidentId)) {
+            return (new uint[](0), false);
+        }
+
+        // Получим историю инцидента
+        IncidentHistory[] storage histArray = incidentHistory[incidentId];
+        // Инициализируем массив результата
+        uint[] memory historyIds = new uint[](histArray.length);
+        // Заполним массив идентификаторами записей инцидента
+        for (uint i = 0; i < histArray.length; i++)
+            historyIds[i] = histArray[i].historyId;
+        
+        return (historyIds, true);
+    }
+    /// @notice Return incident's history length
     function getIncidentHistoryLength(uint incidentId) external view returns (uint)
     {
         // Проверим наличие инцидента
