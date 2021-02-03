@@ -187,7 +187,8 @@ contract BPTechSupport is IncidentManagment {
         addEmplRole(BP_TS_ID, EMPL_DEVELOPER_ID, ROLE_DEVELOPER_ID);
         addEmplRole(BP_TS_ID, EMPL_DEVELOPER_2_ID, ROLE_DEVELOPER_ID);
 
-        // Зарегистрируем инцидент
+
+        // Клиент Сбербанка создает обращение в тех. поддержку ФинТеха
         regIncident(
             INCIDENT_1_ID,
             0,  // дата
@@ -199,8 +200,64 @@ contract BPTechSupport is IncidentManagment {
             EMPL_SPECIALIST_ID,
             0x1234123412341234123412341234123412341234123412341234123412341234
         );
+        // Специалист ФинТеха сообщает клиенту о решении
+        addIncidentHistory(
+            INCIDENT_1_ID,
+            ACT_NOTIFY_CLIENT_ID,
+            0,  // Дата
+            EMPL_SPECIALIST_ID,
+            EMPL_CLIENT_ID,
+            0xffeeddccaabbccddeeffaabbccddeeffaabbccddeeffaabbccddeeffaabbccdd
+        );
+        // Клиент возвращает обращение на повторное выполнение
+        addIncidentHistory(
+            INCIDENT_1_ID,
+            ACT_REPROCESS_ID,
+            0,  // Дата
+            EMPL_CLIENT_ID,
+            EMPL_SPECIALIST_ID,
+            0xffeeddccaabbccddeeffaabbccddeeffaabbccddeeffaabbccddeeffaabbccdd
+        );
+        // Специалист запрашивает консультацию разработчика
+        addIncidentHistory(
+            INCIDENT_1_ID,
+            ACT_DEV_REQ_ID,
+            0,  // Дата
+            EMPL_SPECIALIST_ID,
+            EMPL_DEVELOPER_ID,
+            0xffeeddccaabbccddeeffaabbccddeeffaabbccddeeffaabbccddeeffaabbccdd
+        );
+        // Разработчик отвечает специалисту
+        addIncidentHistory(
+            INCIDENT_1_ID,
+            ACT_DEV_RESP_ID,
+            0,  // Дата
+            EMPL_DEVELOPER_ID,
+            EMPL_SPECIALIST_ID,
+            0xffeeddccaabbccddeeffaabbccddeeffaabbccddeeffaabbccddeeffaabbccdd
+        );
+        // Специалист сообщает клиенту о решении
+        addIncidentHistory(
+            INCIDENT_1_ID,
+            ACT_NOTIFY_CLIENT_ID,
+            1,  // Дата
+            EMPL_SPECIALIST_ID,
+            EMPL_CLIENT_ID,
+            0xffeeddccaabbccddeeffaabbccddeeffaabbccddeeffaabbccddeeffaabbccdd
+        );
+        // Клиент закрывает обращение
+        resolveIncident(
+            INCIDENT_1_ID,
+            ACT_RESOLVE_ID,
+            2,  // Дата
+            EMPL_CLIENT_ID,
+            EMPL_SPECIALIST_ID,
+            0xffeeddccaabbccddeeffaabbccddeeffaabbccddeeffaabbccddeeffaabbccdd
+        );
 
-        // Зарегистрируем ещё инцидент
+        
+
+        // Зарегистрируем ещё инцидент для дальнейших тестов через вызовы в Remix
         regIncident(
             INCIDENT_2_ID,
             0,
@@ -213,12 +270,14 @@ contract BPTechSupport is IncidentManagment {
             0xffeeddccaabbccddeeffaabbccddeeffaabbccddeeffaabbccddeeffaabbccdd
         );
 
+
+
+        // Создадим ещё один бизнес-процесс обращения к вендору ПО
+        // Этот процесс инциируется разработчиком из первого бизнес-процесса,
+        // который будет выступать клиентом для вендора
+
         /***** Организация - вендор *****/
-        // Бизнес-процесс тех. поддержки
-        addBP(
-            BP_VENDOR_ID, 
-            "Vindor BP"
-        );
+        addBP(BP_VENDOR_ID, "Vindor BP");
         // Назначение действий ролям в БП
         addRoleAction(BP_VENDOR_ID, ROLE_CLIENT_ID, ACT_REG_ID);
         addRoleAction(BP_VENDOR_ID, ROLE_CLIENT_ID, ACT_REPROCESS_ID);
@@ -229,11 +288,8 @@ contract BPTechSupport is IncidentManagment {
 
         addRoleAction(BP_VENDOR_ID, ROLE_DEVELOPER_ID, ACT_DEV_RESP_ID);
 
-        addOrg(
-            FORS, 
-            "Fors",
-            "Vendor"
-        );
+        // Организация вендора
+        addOrg(FORS, "Fors", "Vendor");
         // Empl1
         addEmpl(
             EMPL_VENDOR_SPECIALIST_ID,
@@ -249,14 +305,11 @@ contract BPTechSupport is IncidentManagment {
             "empl2@fors.ru"
         );
 
-
         // Назначение в БП ролей сотрудникам
-        // Разработчик их первого БП - клиент второго БП
+        // Разработчик из первого БП - это клиент второго БП
         addEmplRole(BP_VENDOR_ID, EMPL_DEVELOPER_ID, ROLE_CLIENT_ID);
         addEmplRole(BP_VENDOR_ID, EMPL_DEVELOPER_2_ID, ROLE_CLIENT_ID);
-
         addEmplRole(BP_VENDOR_ID, EMPL_VENDOR_SPECIALIST_ID, ROLE_SPECIALIST_ID);
-
         addEmplRole(BP_VENDOR_ID, EMPL_VENDOR_DEVELOPER_ID, ROLE_DEVELOPER_ID);
 
         // Зарегистрируем инцидент у вендора:
