@@ -13,7 +13,7 @@ abstract contract Organizations is Owned {
         string name;
         string desc;
     }
-    /// @dev Organizations, key is organization id
+    /// @notice Organizations, key is organization id
     mapping(uint => Organization) public orgs;
     
     /// @dev Type for employees
@@ -22,7 +22,7 @@ abstract contract Organizations is Owned {
         string fio;
         string email;
     }
-    /// @dev Employees, key is employee id
+    /// @notice Employees, key is employee id
     mapping(uint => Employee) public empls;
 
     /// @notice Logging for new organization
