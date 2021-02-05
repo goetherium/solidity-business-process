@@ -124,7 +124,7 @@ abstract contract BusinessProcesses is Owned {
     function validateBP(uint bpId) internal view {
         require(
             bytes(bps[bpId]).length > 0, 
-            "The business process is not exists"
+            unicode"Бизнес процесс не существует"
         );
     }
     
@@ -133,7 +133,7 @@ abstract contract BusinessProcesses is Owned {
     function validateRole(uint roleId) internal view {
         require(
             bytes(roles[roleId]).length > 0, 
-            "The role is not exists"
+            unicode"Роль не существует"
         );
     }
 
@@ -142,7 +142,7 @@ abstract contract BusinessProcesses is Owned {
     function validateAction(uint actionId) internal view {
         require(
             bytes(actions[actionId]).length > 0, 
-            "The action is not exists"
+            unicode"Действие роли не существует"
         );
     }
     
