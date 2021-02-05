@@ -29,7 +29,6 @@ contract BPTechSupport is IncidentManagment {
     uint constant ACT_REPROCESS_ID = 6;  // Клиент отправляет обращение на повторную обработку
     uint constant ACT_RESOLVE_ID = 7;  // Проблема решена, клиент завершает бизнес-процесс
 
-    
     // !!! Организации и сотрудники в данном контракте только для удобства
     // тестирования в Remix. В реальном контракте это нужно вынести во внешний
     // тестирующий контракт или выполнять внешние вызовы
@@ -59,50 +58,49 @@ contract BPTechSupport is IncidentManagment {
 
 
     constructor() {
-        // Бизнес-процесс тех. поддержки
         addBP(
             BP_TS_ID, 
-            "\xd0\x9e\xd0\xb1\xd1\x80\xd0\xb0\xd1\x89\xd0\xb5\xd0\xbd\xd0\xb8\xd0\xb5\x20\xd0\xb2\x20\xd1\x82\xd0\xb5\xd1\x85\x2e\x20\xd0\xbf\xd0\xbe\xd0\xb4\xd0\xb4\xd0\xb5\xd1\x80\xd0\xb6\xd0\xba\xd1\x83"
+            unicode"Бизнес-процесс тех. поддержки"
         );
         
         // Справочник ролей
         addRole(
             ROLE_CLIENT_ID, 
-            "\xd0\x9a\xd0\xbb\xd0\xb8\xd0\xb5\xd0\xbd\xd1\x82"
+            unicode"Клиент"
         );
         addRole(
             ROLE_SPECIALIST_ID, 
-            "\xd0\xa1\xd0\xbf\xd0\xb5\xd1\x86\xd0\xb8\xd0\xb0\xd0\xbb\xd0\xb8\xd1\x81\xd1\x82"
+            unicode"Специалист"
         );
         addRole(
             ROLE_DEVELOPER_ID, 
-            "\xd0\xa0\xd0\xb0\xd0\xb7\xd1\x80\xd0\xb0\xd0\xb1\xd0\xbe\xd1\x82\xd1\x87\xd0\xb8\xd0\xba"
+            unicode"Разработчик"
         );
         
         // Справочник действий
         addAction(
             ACT_REG_ID,
-            "\xd0\xa0\xd0\xb5\xd0\xb3\xd0\xb8\xd1\x81\xd1\x82\xd1\x80\xd0\xb0\xd1\x86\xd0\xb8\xd1\x8f\x20\xd0\xbe\xd0\xb1\xd1\x80\xd0\xb0\xd1\x89\xd0\xb5\xd0\xbd\xd0\xb8\xd1\x8f"
+            unicode"Регистрация обращения"
         );
         addAction(
             ACT_NOTIFY_CLIENT_ID,
-            "\xd0\xa3\xd0\xb2\xd0\xb5\xd0\xb4\xd0\xbe\xd0\xbc\xd0\xbb\xd0\xb5\xd0\xbd\xd0\xb8\xd0\xb5\x20\xd0\xba\xd0\xbb\xd0\xb8\xd0\xb5\xd0\xbd\xd1\x82\xd0\xb0\x20\xd0\xbe\x20\xd1\x80\xd0\xb5\xd1\x88\xd0\xb5\xd0\xbd\xd0\xb8\xd0\xb8"
+            unicode"Уведомление клиента о решении проблемы"
         );
         addAction(
             ACT_DEV_REQ_ID,
-            "\xd0\x97\xd0\xb0\xd0\xbf\xd1\x80\xd0\xbe\xd1\x81\x20\xd0\xba\xd0\xbe\xd0\xbd\xd1\x81\xd1\x83\xd0\xbb\xd1\x8c\xd1\x82\xd0\xb0\xd1\x86\xd0\xb8\xd0\xb8\x20\xd1\x80\xd0\xb0\xd0\xb7\xd1\x80\xd0\xb0\xd0\xb1\xd0\xbe\xd1\x82\xd1\x87\xd0\xb8\xd0\xba\xd0\xb0"
+            unicode"Запрос консультации разработчика"
         );
         addAction(
             ACT_DEV_RESP_ID,
-            "\xd0\x9e\xd1\x82\xd0\xb2\xd0\xb5\xd1\x82\x20\xd1\x80\xd0\xb0\xd0\xb7\xd1\x80\xd0\xb0\xd0\xb1\xd0\xbe\xd1\x82\xd1\x87\xd0\xb8\xd0\xba\xd0\xb0\x20\xd1\x81\xd0\xbf\xd0\xb5\xd1\x86\xd0\xb8\xd0\xb0\xd0\xbb\xd0\xb8\xd1\x81\xd1\x82\xd1\x83"
+            unicode"Консультация разработчика - ответ специалисту 2-ой линии"
         );
         addAction(
             ACT_REPROCESS_ID,
-            "\xd0\x9d\xd0\xb0\xd0\xbf\xd1\x80\xd0\xb0\xd0\xb2\xd0\xbb\xd0\xb5\xd0\xbd\xd0\xb8\xd0\xb5\x20\xd0\xbd\xd0\xb0\x20\xd0\xbf\xd0\xbe\xd0\xb2\xd1\x82\xd0\xbe\xd1\x80\xd0\xbd\xd1\x83\xd1\x8e\x20\xd0\xbe\xd0\xb1\xd1\x80\xd0\xb0\xd0\xb1\xd0\xbe\xd1\x82\xd0\xba\xd1\x83"
+            unicode"Клиент отправляет обращение на повторную обработку"
         );
         addAction(
             ACT_RESOLVE_ID,
-            "\xd0\x97\xd0\xb0\xd0\xb2\xd0\xb5\xd1\x80\xd1\x88\xd0\xb5\xd0\xbd\xd0\xb8\xd0\xb5\x20\xd0\xb1\xd0\xb8\xd0\xb7\xd0\xbd\xd0\xb5\xd1\x81\x2d\xd0\xbf\xd1\x80\xd0\xbe\xd1\x86\xd0\xb5\xd1\x81\xd1\x81\xd0\xb0"
+            unicode"Проблема решена, клиент завершает бизнес-процесс"
         );
         
         // Назначение действий ролям в БП
@@ -123,57 +121,50 @@ contract BPTechSupport is IncidentManagment {
         /***** Организация - клиент *****/
         addOrg(
             SBERBANK, 
-            "\xd0\xa1\xd0\xb1\xd0\xb5\xd1\x80\xd0\xb1\xd0\xb0\xd0\xbd\xd0\xba",  // Сбербанк
-            "\xd0\x91\xd0\xb0\xd0\xbd\xd0\xba"  // Банк
+            unicode"Сбербанк",
+            unicode"Банк"
         );
-        // Иванов Сергей
         addEmpl(
             EMPL_CLIENT_ID,
             SBERBANK, 
-            "\xd0\x98\xd0\xb2\xd0\xb0\xd0\xbd\xd0\xbe\xd0\xb2\x20\xd0\xa1\xd0\xb5\xd1\x80\xd0\xb3\xd0\xb5\xd0\xb9",
+            unicode"Иванов Сергей",
             "ivanov@sberbank.ru"
         );
-        // Кутепов Артём
         addEmpl(
             EMPL_CLIENT_2_ID,
             SBERBANK, 
-            "\xd0\x9a\xd1\x83\xd1\x82\xd0\xb5\xd0\xbf\xd0\xbe\xd0\xb2\x20\xd0\x90\xd1\x80\xd1\x82\xd1\x91\xd0\xbc",
+            unicode"Кутепов Артём",
             "kutepov@sberbank.ru"
         );
 
         /***** Организация, отвечающая за решение проблемы *****/
         addOrg(
             FINTECH, 
-            "\xd0\xa4\xd0\xb8\xd0\xbd\xd0\xa2\xd0\xb5\xd1\x85",  // ФинТех
-            "\xd0\xa0\xd0\xb0\xd0\xb7\xd1\x80\xd0\xb0\xd0\xb1\xd0\xbe\xd1\x82\xd0\xba\xd0\xb0\x20\xd0\xb1\xd0\xbb\xd0\xbe\xd0\xba\xd1\x87\xd0\xb5\xd0\xb9\xd0\xbd\xd0\xb0"  // Разработка блокчейна
+            unicode"ФинТех",
+            unicode"Разработка блокчейна"
         );
-        // Петров Евгений
         addEmpl(
             EMPL_SPECIALIST_ID,
             FINTECH, 
-            "\xd0\x9f\xd0\xb5\xd1\x82\xd1\x80\xd0\xbe\xd0\xb2\x20\xd0\x95\xd0\xb2\xd0\xb3\xd0\xb5\xd0\xbd\xd0\xb8\xd0\xb9",
+            unicode"Петров Евгений",
             "petrov@fintech.ru"
         );
-        // Васечкин Пётр
         addEmpl(
             EMPL_SPECIALIST_2_ID,
             FINTECH, 
-            "\xd0\x92\xd0\xb0\xd1\x81\xd0\xb5\xd1\x87\xd0\xba\xd0\xb8\xd0\xbd\x20\xd0\x9f\xd1\x91\xd1\x82\xd1\x80",
+            unicode"Васечкин Пётр",
             "vasechkin@fintech.ru"
         );
-
-        // Быстров Павел
         addEmpl(
             EMPL_DEVELOPER_ID,
             FINTECH, 
-            "\xd0\x91\xd1\x8b\xd1\x81\xd1\x82\xd1\x80\xd0\xbe\xd0\xb2\x20\xd0\x9f\xd0\xb0\xd0\xb2\xd0\xb5\xd0\xbb",
+            unicode"Быстров Павел",
             "bistrov@fintech.ru"
         );
-        // Умнов Алексей
         addEmpl(
             EMPL_DEVELOPER_2_ID,
             FINTECH, 
-            "\xd0\xa3\xd0\xbc\xd0\xbd\xd0\xbe\xd0\xb2\x20\xd0\x90\xd0\xbb\xd0\xb5\xd0\xba\xd1\x81\xd0\xb5\xd0\xb9",
+            unicode"Умнов Алексей",
             "umnov@fintech.ru"
         );
 
@@ -289,19 +280,19 @@ contract BPTechSupport is IncidentManagment {
         addRoleAction(BP_VENDOR_ID, ROLE_DEVELOPER_ID, ACT_DEV_RESP_ID);
 
         // Организация вендора
-        addOrg(FORS, "Fors", "Vendor");
+        addOrg(FORS, unicode"ООО Форс - центр разработки", unicode"Вендор");
         // Empl1
         addEmpl(
             EMPL_VENDOR_SPECIALIST_ID,
             FORS, 
-            "Fors employee 1",
+            unicode"Форс - специалист",
             "empl1@fors.ru"
         );
         // Empl2
         addEmpl(
             EMPL_VENDOR_DEVELOPER_ID,
             FORS, 
-            "Fors employee 2",
+            unicode"Форс - разработчик",
             "empl2@fors.ru"
         );
 
@@ -328,4 +319,6 @@ contract BPTechSupport is IncidentManagment {
         );
 
     }  // конструктор
+
+    function getBPId() external pure returns (uint) { return BP_TS_ID; }
 }
