@@ -91,7 +91,7 @@ abstract contract Organizations is Owned {
     function validateOrg(uint orgId) internal view {
         require(
             bytes(orgs[orgId].name).length > 0, 
-            "The organization does not exist"
+            unicode"Организация не существует"
         );
     }
     
@@ -99,7 +99,7 @@ abstract contract Organizations is Owned {
     function validateEmployee(uint emplId) internal view {
         require(
             bytes(empls[emplId].fio).length > 0, 
-            "The employee does not exist"
+            unicode"Сотрудник не существует"
         );
     }
 }
