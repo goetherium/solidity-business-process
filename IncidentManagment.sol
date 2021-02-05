@@ -74,11 +74,11 @@ abstract contract IncidentManagment is Organizations, BusinessProcesses, Employe
         validateAction(regActionId);
         // Проверим наличие инцидента
         if (incidentExists(incidentId))
-            revert("The incident already exists");
+            revert(unicode"Инцидент уже существует");
 
         // Может ли сотрудник зарегистрировать инцидент?
         if (!checkEmplAction(bpId, reqEmplId, regActionId))
-            revert("The employee cannot register this incident");
+            revert(unicode"У сотрудника нет права создания инцидента");
 
         // Регистрация нового инцидента
         uint keyIndex;
@@ -124,14 +124,14 @@ abstract contract IncidentManagment is Organizations, BusinessProcesses, Employe
         validateEmployee(resEmplId);
         validateAction(actionId);
         if (!incidentExists(incidentId))
-            revert("The incident is not exists");
+            revert(unicode"Инцидент не существует");
         // Получим инцидент
         Incident storage incident = incidents.data[incidentId];
         if (incident.resolveDate > 0)
-            revert("The incident is already resolved");
+            revert(unicode"Инцидент уже решён");
         // Может ли сотрудник выполнить данное действие?
         if (!checkEmplAction(incident.bpId, reqEmplId, actionId))
-            revert("The employee has not rigths for this action");
+            revert(unicode"У сотрудника нет права выполнения действия");
 
         // Занесём новую запись в историю
         ( historyId, success) = incidentHistoryInsert(
@@ -164,14 +164,14 @@ abstract contract IncidentManagment is Organizations, BusinessProcesses, Employe
         validateEmployee(reqEmplId);
         validateAction(resolveActionId);
         if (!incidentExists(incidentId))
-            revert("The incident is not exists");
+            revert(unicode"Инцидент не существует");
         // Получим инцидент
         Incident storage incident = incidents.data[incidentId];
         if (incident.resolveDate > 0)
-            revert("The incident is already resolved");
+            revert(unicode"Инцидент уже завершён");
         // Может ли сотрудник завершить инцидент?
         if (!checkEmplAction(incident.bpId, reqEmplId, resolveActionId))
-            revert("The employee cannot resolve this incident");
+            revert(unicode"У сотрудника нет прав для завершения инцидента");
         // Занесём дату завершения
         incident.resolveDate = resolveDate;
         
