@@ -320,5 +320,4 @@ contract BPTechSupport is IncidentManagment {
 
     }  // конструктор
 
-    function getBPId() external pure returns (uint) { return BP_TS_ID; }
 }
